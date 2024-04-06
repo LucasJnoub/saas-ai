@@ -4,6 +4,9 @@ import { authMiddleware, redirectToSignIn } from "@clerk/nextjs"
 export default authMiddleware({
   publicRoutes: ["/"],
   afterAuth(auth, req, evt) {
+    if (!auth.userId && !auth.isPublicRoute) {
+      return redirectToSignIn({ returnBackUrl: req.url });
+    }
     if(auth.userId && auth.isPublicRoute){
     const dashboard = new URL("/dashboard", req.url);
     return NextResponse.redirect(dashboard);
