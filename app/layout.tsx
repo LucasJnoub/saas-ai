@@ -10,11 +10,13 @@ export const metadata: Metadata = {
   description: "AI Plataform  ",
 };
 
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
   return (
     <ClerkProvider>
       <html lang="en">
