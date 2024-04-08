@@ -10,8 +10,17 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { on } from 'events';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { env } from 'process';
+import { useRouter } from 'next/navigation';
+const axios = require('axios');
+
+
 
 export default function ConversationPage() {
+
+const  router = useRouter();
+const [messages, setMessages] = React.useState<any []>([]);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues:{
@@ -20,9 +29,41 @@ export default function ConversationPage() {
   })
 
   const isLoading = form.formState.isSubmitting;
-  const onSubmit = async (values:z.infer<typeof formSchema>)=>{
-    console.log(values);
-  }
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    try {
+      const userMessage: any = {
+        role: "user",
+        content: values.prompt,
+      };
+  
+      // Adicione a mensagem do usuário ao final da lista de mensagens
+      const newMessages = [...messages, userMessage];
+  
+      // Atualize o estado das mensagens com a nova lista
+      setMessages(newMessages);
+  
+      // Faça a chamada à API para obter a resposta do modelo
+      const response = await axios.post('/api/conversation', {
+        messages: newMessages,
+      });
+  
+      const botMessage = {
+        role: "bot",
+        content: response.data,
+      };
+  
+      // Adicione a resposta do modelo ao final da lista de mensagens
+      setMessages((current) => [...current, botMessage]);
+  
+      form.reset();
+    } catch (error: any) {
+      console.log(error);
+    } finally {
+      router.refresh();
+    }
+  };
+  
+  
   return (
     <div>
       <Heading
@@ -58,6 +99,21 @@ export default function ConversationPage() {
           </form>
         </Form>
       </div>
+
+      <div className="space-y-4 mt-4 px-4 lg:px-8">
+  <div className="flex flex-col-reverse gap-y-4">
+    {messages.map((message, index) => (
+      <div
+        key={index}
+        className={`rounded-lg p-4 ${
+          message.role === "user" ? "bg-blue-100" : "bg-gray-100"
+        }`}
+      >
+        {message.content}
+      </div>
+    ))}
+  </div>
+</div>
     </div>
   )
 }
