@@ -7,12 +7,14 @@ import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
 import { useForm } from 'react-hook-form'
 import { formSchema } from './constants';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { on } from 'events';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { env } from 'process';
 import { useRouter } from 'next/navigation';
-const axios = require('axios');
+// const axios = require('axios');
+import axios from 'axios';
+import { Empty } from '@/components/empty';
+import { Loader } from '@/components/loader';
 
 
 
@@ -38,7 +40,6 @@ const [messages, setMessages] = React.useState<any []>([]);
   
       // Adicione a mensagem do usuário ao final da lista de mensagens
       const newMessages = [...messages, userMessage];
-  
       // Atualize o estado das mensagens com a nova lista
       setMessages(newMessages);
   
@@ -101,6 +102,12 @@ const [messages, setMessages] = React.useState<any []>([]);
       </div>
 
       <div className="space-y-4 mt-4 px-4 lg:px-8">
+        {isLoading && (
+          <div className="p-8 rounded-lg w-full  bg-muted">
+            <Loader></Loader>
+          </div>
+        )}
+        {messages.length === 0 && !isLoading && <Empty label='No conversation started'/>}
   <div className="flex flex-col-reverse gap-y-4">
     {messages.map((message, index) => (
       <div
