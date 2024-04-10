@@ -37,19 +37,17 @@ const [messages, setMessages] = React.useState<any []>([]);
         role: "user",
         content: values.prompt,
       };
-
-         // Verifique se o número de mensagens já atingiu o limite
-    if (messages.length >= MAX_FREE_COUNTS) {
-      // Não adicione uma nova mensagem se o limite já foi atingido
-      proModal.onOpen(); // Abre o modal de aviso de limite atingido
-
-      return;
-    }
+  
+      // Verifique se o número de mensagens já atingiu o limite
+      if (messages.length >= MAX_FREE_COUNTS) {
+        // Não adicione uma nova mensagem se o limite já foi atingido
+        proModal.onOpen(); // Abre o modal de aviso de limite atingido
+  
+        return;
+      }
   
       // Adicione a mensagem do usuário ao final da lista de mensagens
       const newMessages = [...messages, userMessage];
-      // Atualize o estado das mensagens com a nova lista
-      setMessages(newMessages);
   
       // Faça a chamada à API para obter a resposta do modelo
       const response = await axios.post('/api/conversation', {
@@ -61,19 +59,18 @@ const [messages, setMessages] = React.useState<any []>([]);
         content: response.data,
       };
   
-      // Adicione a resposta do modelo ao final da lista de mensagens
-      setMessages((current) => [...current, botMessage]);
+      // Atualize o estado das mensagens com a nova lista, incluindo a resposta do modelo
+      setMessages((current) => [...current, userMessage, botMessage]);
   
       form.reset();
     } catch (error: any) {
-      if(error?.response?.status===403){
+      if (error?.response?.status === 403) {
         proModal.onOpen();
       }
     } finally {
       router.refresh();
     }
   };
-  
   
   return (
     <div>
