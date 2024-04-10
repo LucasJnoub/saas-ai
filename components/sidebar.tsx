@@ -95,7 +95,7 @@ export default function SideBar({ apiLimitCount}: SideBarProps) {
         </div>
 
       </div>
-      <div className="md:mt-[310px]"> 
+      <div className="md:mt-20"> 
       <FreeCounter
           apiLimitCount={apiLimitCount}
         />
