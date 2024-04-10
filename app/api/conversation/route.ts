@@ -30,8 +30,7 @@ export async function POST(req: Request) {
     const text = response.text();
 
     return new Response(text);
-  } catch (error: any) {
-    console.log(error);
-    return new Response(error.message, { status: 500 });
+  } catch (error:any) {
+      return new Response(error.message, { status: 500 });
   }
 }

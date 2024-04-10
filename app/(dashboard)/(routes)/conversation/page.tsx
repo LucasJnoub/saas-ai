@@ -13,11 +13,13 @@ import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import { Empty } from '@/components/empty';
 import { Loader } from '@/components/loader';
+import { useProModal } from '@/hooks/user-pro-modal';
+import { MAX_FREE_COUNTS } from '@/constants';
 
 
 
 export default function ConversationPage() {
-
+const proModal = useProModal();
 const  router = useRouter();
 const [messages, setMessages] = React.useState<any []>([]);
 
@@ -35,6 +37,14 @@ const [messages, setMessages] = React.useState<any []>([]);
         role: "user",
         content: values.prompt,
       };
+
+         // Verifique se o número de mensagens já atingiu o limite
+    if (messages.length >= MAX_FREE_COUNTS) {
+      // Não adicione uma nova mensagem se o limite já foi atingido
+      proModal.onOpen(); // Abre o modal de aviso de limite atingido
+
+      return;
+    }
   
       // Adicione a mensagem do usuário ao final da lista de mensagens
       const newMessages = [...messages, userMessage];
@@ -56,7 +66,9 @@ const [messages, setMessages] = React.useState<any []>([]);
   
       form.reset();
     } catch (error: any) {
-      console.log(error);
+      if(error?.response?.status===403){
+        proModal.onOpen();
+      }
     } finally {
       router.refresh();
     }

@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import { ArrowRight, CodeIcon, Image, ImageIcon, MessageSquare, Music, VideoIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 
-const tools = [{
+export const tools = [{
   label:"Conversation",
   icon: MessageSquare,
   color:'text-violet-500',
