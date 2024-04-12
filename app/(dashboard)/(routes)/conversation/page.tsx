@@ -41,7 +41,8 @@ const [messages, setMessages] = React.useState<any []>([]);
       // Verifique se o número de mensagens já atingiu o limite
       if (messages.length >= MAX_FREE_COUNTS) {
         // Não adicione uma nova mensagem se o limite já foi atingido
-        proModal.onOpen(); // Abre o modal de aviso de limite atingido
+        // proModal.onOpen()
+        ; // Abre o modal de aviso de limite atingido
   
         return;
       }

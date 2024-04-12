@@ -1,5 +1,6 @@
 "use client"
 import React from 'react'
+import axios from 'axios'
 import { Dialog, DialogHeader, DialogContent, DialogTitle, DialogDescription, DialogFooter} from './ui/dialog'
 import { useProModal } from '@/hooks/user-pro-modal'
 import { Badge } from './ui/badge';
@@ -7,39 +8,53 @@ import {  Check, CodeIcon, ImageIcon, MessageSquare, Music, VideoIcon, Zap } fro
 import { Card } from './ui/card';
 import { cn } from '@/lib/utils';
 import { Button } from './ui/button';
+const tools = [{
+  label:"Conversation",
+  icon: MessageSquare,
+  color:'text-violet-500',
+  bgColor:'bg-violet-500/10',
+  href:"/conversation",
+},{
+  label:"Music Generation",
+  icon: Music,
+  color:'text-emerald-500',
+  bgColor:'bg-emerald-500/10',
+  href:"/music",
+},{
+  label:"Image Generation",
+  icon: ImageIcon,
+  color:'text-pink-700',
+  bgColor:'bg-pink-700/10',
+  href:"/conversation",
+},{
+  label:"Video Generation",
+  icon: VideoIcon,
+  color:'text-orange-700',
+  bgColor:'bg-orange-700/10',
+  href:"/video",
+},{
+  label:"Code Generation",
+  icon: CodeIcon,
+  color:'text-green-700',
+  bgColor:'bg-green-700/10',
+  href:"/code",
+},];
 export default function ProModal() {
   const proModal = useProModal();
-  const tools = [{
-    label:"Conversation",
-    icon: MessageSquare,
-    color:'text-violet-500',
-    bgColor:'bg-violet-500/10',
-    href:"/conversation",
-  },{
-    label:"Music Generation",
-    icon: Music,
-    color:'text-emerald-500',
-    bgColor:'bg-emerald-500/10',
-    href:"/music",
-  },{
-    label:"Image Generation",
-    icon: ImageIcon,
-    color:'text-pink-700',
-    bgColor:'bg-pink-700/10',
-    href:"/conversation",
-  },{
-    label:"Video Generation",
-    icon: VideoIcon,
-    color:'text-orange-700',
-    bgColor:'bg-orange-700/10',
-    href:"/video",
-  },{
-    label:"Code Generation",
-    icon: CodeIcon,
-    color:'text-green-700',
-    bgColor:'bg-green-700/10',
-    href:"/code",
-  },];
+  const [loading, setLoading] = React.useState(false);
+  const onSubscribe = async ()=>{
+    try {
+      setLoading(true);
+      const response  = await axios.get("/api/stripe");
+      window.location.href = response.data.url;
+
+    }catch(error){
+      console.log(error, "STRIPE_CLIENT_ERROR");
+       
+    }finally{
+      setLoading(false);
+    }
+  }
   
   return (
     <Dialog open={proModal.isOpen} onOpenChange={proModal.onClose}>
@@ -77,6 +92,7 @@ export default function ProModal() {
            size={"lg"}
            variant={"premium"}
           className='w-full'
+          onClick={onSubscribe}
            >
             
             Upgrade
