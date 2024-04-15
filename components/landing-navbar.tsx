@@ -18,7 +18,7 @@ const font = Montserrat({
   return (
   <nav className="p-4 bg-transparent flex items-center justify-between">
     <Link
-      href=""
+      href="/"
       className="flex items-center"
     >
       <div className="relative h-8 w-8 mr-4">
@@ -36,7 +36,7 @@ const font = Montserrat({
 
     <div className="flex items-center gap-x-2">
       <Link
-      href={isSignedIn? "/dashboard" : "/auth/sign-up"}
+      href={isSignedIn? "/dashboard" : "/sign-up"}
       >
         <Button  variant={"outline"} className="rounded-full">
           Get Started
