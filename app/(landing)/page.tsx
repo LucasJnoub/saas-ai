@@ -1,16 +1,18 @@
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import React from 'react'
+import  LandingNavBar  from '@/components/landing-navbar'
+import { LandingHero } from '@/components/landing-hero'
+import LandingContent from '@/components/landing-content'
 
-export default function LandingPage() {
+ function LandingPage() {
   return (
-    <div>
-      <Link href="/sign-in" passHref>
-        <Button>Login</Button>
-      </Link>
-      <Link href="/sign-up" passHref>
-        <Button>Sign-up</Button>
-      </Link>
+    <div className='h-full'>
+      <LandingNavBar></LandingNavBar>
+      <LandingHero></LandingHero>
+      <LandingContent></LandingContent>
     </div>
   )
 }
+
+export default LandingPage;
