@@ -55,9 +55,10 @@ const routes = [
 
 interface SideBarProps {
   apiLimitCount: number
+  isPro: boolean
 }
 
-export default function SideBar({ apiLimitCount}: SideBarProps) {
+export default function SideBar({ apiLimitCount, isPro}: SideBarProps) {
   const pathname = usePathname();
   return (
     <div className=' py-4 flex-col h-full bg-[#111827] text-white'>
@@ -96,7 +97,7 @@ export default function SideBar({ apiLimitCount}: SideBarProps) {
 
       </div>
       <div className="md:mt-20"> 
-      <FreeCounter
+      <FreeCounter isPro={isPro}
           apiLimitCount={apiLimitCount}
         />
       </div>

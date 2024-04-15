@@ -8,10 +8,11 @@ import SideBar from './sidebar';
 
 interface MobileSideBarProps{
   apiLimitCount:number
+  isPro:boolean
 }
 
 
-export default function MobileSideBar({apiLimitCount}: MobileSideBarProps) {
+export default function MobileSideBar({apiLimitCount = 0, isPro = false}: MobileSideBarProps) {
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
@@ -30,7 +31,7 @@ export default function MobileSideBar({apiLimitCount}: MobileSideBarProps) {
           </SheetTrigger>
         )}
         <SheetContent side={'left'} className='p-0' closeIconColor='white'>
-          <SideBar apiLimitCount={apiLimitCount}></SideBar>
+          <SideBar  isPro={isPro} apiLimitCount={apiLimitCount}></SideBar>
         </SheetContent>
       </Sheet>
     </div>

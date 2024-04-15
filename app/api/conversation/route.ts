@@ -1,6 +1,7 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { auth } from "@clerk/nextjs";
 import { checkApiLimit, increaseApiLimit } from '@/lib/api-limit';
+import { checkSubscription } from '@/lib/subscription';
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GEMINI_API_KEY as any);
 
 export async function POST(req: Request) {
@@ -21,8 +22,9 @@ export async function POST(req: Request) {
 
     const prompt = messages.map((message: any) => message.content).join("\n");
     const freeTrial = await checkApiLimit();
+    const isPro = await checkSubscription();
 
-    if(!freeTrial) return new Response("Free trial has expired", { status: 403});
+    if(!freeTrial && !isPro) return new Response("Free trial has expired", { status: 403});
 
     const result = await model.generateContent(prompt);
     await increaseApiLimit();
