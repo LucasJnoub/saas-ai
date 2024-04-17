@@ -35,6 +35,14 @@ const font = Montserrat({
     </Link>
 
     <div className="flex items-center gap-x-2">
+    <Link
+      href={isSignedIn? "/dashboard" : "/sign-in"}
+      >
+        <Button  variant={"outline"} className="rounded-full">
+          Sign-in
+        </Button>
+      
+      </Link>
       <Link
       href={isSignedIn? "/dashboard" : "/sign-up"}
       >
