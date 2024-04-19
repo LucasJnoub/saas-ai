@@ -32,23 +32,7 @@
     "src": "/android-launchericon-512-512.png",
     "sizes": "512X512",
     "type": "image/png"
-  },
-    {
-      "src": "/logo-com.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "/logo-com.png",
-      "sizes": "384x384",
-      "type": "image/png"
-    },
-    {
-      "src": "/logo-com.png.png",
-      "sizes": "512x512",
-      "type": "image/png"
-    }
+  }
   ],
   "theme_color": "#111827",
   "background_color": "#111827",
