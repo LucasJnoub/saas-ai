@@ -11,6 +11,7 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Genius",
   description: "AI Plataform  ",
+  manifest:"/manifest.json"
 };
 
 
