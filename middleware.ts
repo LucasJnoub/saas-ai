@@ -2,15 +2,15 @@ import { NextResponse } from "next/server";
 import { authMiddleware, redirectToSignIn } from "@clerk/nextjs"
 
 export default authMiddleware({
-  publicRoutes: ["/", "/api/webhook"],
+  publicRoutes: ["/", "/api/webhook", "/pricing"],
   afterAuth(auth, req, evt) {
     if (!auth.userId && !auth.isPublicRoute) {
       return redirectToSignIn({ returnBackUrl: req.url });
     }
-    if(auth.userId && auth.isPublicRoute){
-    const dashboard = new URL("/dashboard", req.url);
-    return NextResponse.redirect(dashboard);
-    }
+    // if(auth.userId && auth.isPublicRoute){
+    // const dashboard = new URL("/dashboard", req.url);
+    // return NextResponse.redirect(dashboard);
+    // }
 
   }
 });

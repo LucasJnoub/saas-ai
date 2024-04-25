@@ -14,51 +14,93 @@ const montserrat = Montserrat({
   subsets: ['latin']
 });
 
+// const routes = [
+//   {
+//     label: 'Dashboard',
+//     icon: LayoutDashboard,
+//     href: '/dashboard',
+//     color: 'text-sky-500'
+//   }, {
+//     label: 'Conversation',
+//     icon: MessageSquare,
+//     href: '/conversation',
+//     color: 'text-violet-500'
+//   }, {
+//     label: 'Image Generation',
+//     icon: ImageIcon,
+//     href: '/image',
+//     color: 'text-pink-700'
+//   }, {
+//     label: 'Video Generation',
+//     icon: VideoIcon,
+//     href: '/video',
+//     color: 'text-orange-700'
+//   }, {
+//     label: 'Music Generation',
+//     icon: MusicIcon,
+//     href: '/music',
+//     color: 'text-emerald-500'
+//   }, {
+//     label: 'Code Generation',
+//     icon: CodeIcon,
+//     href: '/code',
+//     color: 'text-green-700'
+//   }, {
+//     label: 'Settings',
+//     icon: SettingsIcon,
+//     href: '/settings',
+//     // color:'text-green-700'
+//   },
+// ];
 const routes = [
   {
-    label: 'Dashboard',
+    label: '',
     icon: LayoutDashboard,
     href: '/dashboard',
-    color: 'text-sky-500'
-  }, {
-    label: 'Conversation',
-    icon: MessageSquare,
-    href: '/conversation',
-    color: 'text-violet-500'
-  }, {
-    label: 'Image Generation',
-    icon: ImageIcon,
-    href: '/image',
-    color: 'text-pink-700'
-  }, {
-    label: 'Video Generation',
-    icon: VideoIcon,
-    href: '/video',
-    color: 'text-orange-700'
-  }, {
-    label: 'Music Generation',
-    icon: MusicIcon,
-    href: '/music',
-    color: 'text-emerald-500'
-  }, {
-    label: 'Code Generation',
-    icon: CodeIcon,
-    href: '/code',
-    color: 'text-green-700'
-  }, {
-    label: 'Settings',
-    icon: SettingsIcon,
-    href: '/settings',
-    // color:'text-green-700'
+    color: ' '
+  },
+  {
+    label: '',
+    icon: LayoutDashboard,
+    href: '',
+    color: ' '
+  },
+  {
+    label: '',
+    icon: LayoutDashboard,
+    href: '',
+    color: ' '
+  },
+  {
+    label: '',
+    icon: LayoutDashboard,
+    href: '',
+    color: ' '
+  },
+  {
+    label: '',
+    icon: LayoutDashboard,
+    href: '',
+    color: ' '
+  },
+  {
+    label: '',
+    icon: LayoutDashboard,
+    href: '',
+    color: ' '
   },
 ];
+
+
 
 interface SideBarProps {
   apiLimitCount: number
   isPro: boolean
+  onMenuItemClick: () => void
+  
 }
 
-export default function SideBar({ apiLimitCount, isPro}: SideBarProps) {
+export default function SideBar({ apiLimitCount, isPro,  onMenuItemClick}: SideBarProps) {
   const pathname = usePathname();
   return (
     <div className=' py-4 flex-col h-full bg-[#111827] text-white'>
@@ -84,7 +126,10 @@ export default function SideBar({ apiLimitCount, isPro}: SideBarProps) {
               className={cn('text-sm group flex p-3 w-full justify-start font-medium cursor-pointer hover:text-white hover:bg-white/10 rounded-lg transition'
                 ,
                 pathname === route.href ? 'bg-white/10 text-white' : 'text-zinc-400')
-              }>
+              }
+              onClick={onMenuItemClick} // Chama a função quando o usuário clica em um item do menu
+
+              >
               <div className="flex items-center flex-1">
                 <route.icon className={cn("h-5 w-5 mr-3", route.color)}
                 />

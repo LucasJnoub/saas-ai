@@ -8,37 +8,72 @@ import {  Check, CodeIcon, ImageIcon, MessageSquare, Music, VideoIcon, Zap } fro
 import { Card } from './ui/card';
 import { cn } from '@/lib/utils';
 import { Button } from './ui/button';
-const tools = [{
-  label:"Conversation",
-  icon: MessageSquare,
-  color:'text-violet-500',
-  bgColor:'bg-violet-500/10',
-  href:"/conversation",
-},{
-  label:"Music Generation",
-  icon: Music,
-  color:'text-emerald-500',
-  bgColor:'bg-emerald-500/10',
-  href:"/music",
-},{
-  label:"Image Generation",
-  icon: ImageIcon,
-  color:'text-pink-700',
-  bgColor:'bg-pink-700/10',
-  href:"/conversation",
-},{
-  label:"Video Generation",
-  icon: VideoIcon,
-  color:'text-orange-700',
-  bgColor:'bg-orange-700/10',
-  href:"/video",
-},{
-  label:"Code Generation",
-  icon: CodeIcon,
-  color:'text-green-700',
-  bgColor:'bg-green-700/10',
-  href:"/code",
-},];
+// const tools = [{
+//   label:"Conversation",
+//   icon: MessageSquare,
+//   color:'text-violet-500',
+//   bgColor:'bg-violet-500/10',
+//   href:"/conversation",
+// },{
+//   label:"Music Generation",
+//   icon: Music,
+//   color:'text-emerald-500',
+//   bgColor:'bg-emerald-500/10',
+//   href:"/music",
+// },{
+//   label:"Image Generation",
+//   icon: ImageIcon,
+//   color:'text-pink-700',
+//   bgColor:'bg-pink-700/10',
+//   href:"/conversation",
+// },{
+//   label:"Video Generation",
+//   icon: VideoIcon,
+//   color:'text-orange-700',
+//   bgColor:'bg-orange-700/10',
+//   href:"/video",
+// },{
+//   label:"Code Generation",
+//   icon: CodeIcon,
+//   color:'text-green-700',
+//   bgColor:'bg-green-700/10',
+//   href:"/code",
+// },];
+const tools = [
+  {
+    label:"",
+    icon: MessageSquare,
+    color:'',
+    bgColor:'',
+    href:"/conversation",
+  }, {
+    label:"",
+    icon: MessageSquare,
+    color:'',
+    bgColor:'',
+    href:"/conversation",
+  }, {
+    label:"",
+    icon: MessageSquare,
+    color:'',
+    bgColor:'',
+    href:"/conversation",
+  }, {
+    label:"",
+    icon: MessageSquare,
+    color:'',
+    bgColor:'',
+    href:"/conversation",
+  }, {
+    label:"",
+    icon: MessageSquare,
+    color:'',
+    bgColor:'',
+    href:"/conversation",
+  },
+];
+
+// const tools =[{}]
 export default function ProModal() {
   const proModal = useProModal();
   const [loading, setLoading] = React.useState(false);
@@ -55,6 +90,10 @@ export default function ProModal() {
       setLoading(false);
     }
   }
+
+  const handleCloseModal = () => {
+    proModal.onClose();
+  };
   
   return (
     <Dialog open={proModal.isOpen} onOpenChange={proModal.onClose}>
@@ -70,6 +109,7 @@ export default function ProModal() {
         <DialogDescription className='text-center pt-2 space-y-2 text-zinc-900 font-medium'>  
         {tools.map((tool)=>(
           <Card
+          onClick={handleCloseModal} // Adiciona o manipulador de eventos para fechar o modal ao clicar
           key={tool.label}
           className='p-3 border-black/5 flex items-center justify-between'
           >

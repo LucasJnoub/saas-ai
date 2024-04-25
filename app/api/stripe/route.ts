@@ -1,65 +1,66 @@
 import { NextResponse } from "next/server";
-
 import prismadb from "@/lib/prismadb";
 import { stripe } from "@/lib/stripe";
 import { absoluteUrl } from "@/lib/utils";
 import { auth, currentUser } from "@clerk/nextjs";
-const settingsUrl = absoluteUrl('/settings');
 
-export async function GET(){
-  try{
-    const {userId} = auth();
-    const user  = await currentUser();
+const settingsUrl = absoluteUrl("/settings");
 
-    if(!userId || !user) return new NextResponse("Unauthorized", {status:401});
-    
+export async function GET(request: any) {
+
+  try {
+    const { userId } = auth();
+    const user = await currentUser();
+    const { searchParams } = new URL(request.url);
+    const isMonthly = searchParams.get("isAnnual") === "true";
+
+    if (!userId || !user) return new NextResponse("Unauthorized", { status: 401 });
+
     const userSubscription = await prismadb.userSubscritpion.findUnique({
-      where:{
-        userId
-      }
-    })
+      where: {
+        userId,
+      },
+    });
 
-    if(userSubscription && userSubscription.stripeCustomerId){
+    if (userSubscription && userSubscription.stripeCustomerId) {
       const stripeSession = await stripe.billingPortal.sessions.create({
         customer: userSubscription.stripeCustomerId,
-        return_url: settingsUrl
-      })
+        return_url: settingsUrl,
+      });
 
-      return new NextResponse(JSON.stringify({url:stripeSession.url}))
+      return new NextResponse(JSON.stringify({ url: stripeSession.url }));
     }
 
-    const stripession = await stripe.checkout.sessions.create({
-      success_url:settingsUrl,
+    const stripeSession = await stripe.checkout.sessions.create({
+      success_url: settingsUrl,
       cancel_url: settingsUrl,
-      payment_method_types: ['card'],
-      mode:"subscription",
-      billing_address_collection:"auto",
-      customer_email:user.emailAddresses[0].emailAddress,
-      line_items:[{
-        price_data:{
-          currency:"USD",
-          product_data:{
-            name:"Genius Pro",
-            description:"Unlimited AI Generations"
+      payment_method_types: ["card"],
+      mode: "subscription",
+      billing_address_collection: "auto",
+      customer_email: user.emailAddresses[0].emailAddress,
+      line_items: [
+        {
+          price_data: {
+            currency: "USD",
+            product_data: {
+              name: "Genius Pro",
+              description: "Unlimited AI Generations",
+            },
+            unit_amount: isMonthly ? 2000 : 24000, // 2000 cents for monthly, 24000 cents for yearly
+            recurring: {
+              interval: isMonthly ? "month" : "year", // Set the recurring interval based on isMonthly
+            },
           },
-          unit_amount:2000,
-          recurring:{
-            interval:"month"
-          }
+          quantity: 1,
         },
-        quantity:1
-      }],
-      metadata:{
-        userId
-      }
-
-    })
-
-    return new NextResponse(JSON.stringify({url:stripession.url}))
-  }catch(error){
-    console.log('[STRIPE_ERROR]', error);
-    new NextResponse("Internal error", {status:500})
+      ],
+      metadata: {
+        userId,
+      },
+    });
+    return new NextResponse(JSON.stringify({ url: stripeSession.url }));
+  } catch (error) {
+    console.log("[STRIPE_ERROR]", error);
+    return new NextResponse("Internal error", { status: 500 });
   }
-
-  return new NextResponse(null, {status:500})
 }

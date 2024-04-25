@@ -20,7 +20,7 @@ export const checkSubscription = async ()=>{
       stripeCurrentPeriodEnd:true,
       stripeCustomerId:true,
       stripeSubscriptionId:true,
-      stripePriceId:true
+      stripePriceId:true  
     }
   })
 
