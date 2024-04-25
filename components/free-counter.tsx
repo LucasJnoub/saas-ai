@@ -6,6 +6,7 @@ import { Progress } from './ui/progress';
 import { Button } from './ui/button';
 import { Zap } from 'lucide-react';
 import { useProModal } from '@/hooks/user-pro-modal';
+import Link from 'next/link';
 
 interface FreeCounterProps{
   apiLimitCount:number
@@ -37,8 +38,10 @@ if(isPro) return null;
 
 
           </div>
-
-          <Button onClick={proModal.onOpen} className='w-full' variant={"premium"}>Upgrade <Zap className='w-4 h-4 ml-2 fill white'/></Button>
+          
+          <Link href='/pricing'>
+          <Button  className='w-full' variant={"premium"}>Upgrade <Zap className='w-4 h-4 ml-2 fill white'/></Button>
+          </Link>
         </CardContent>
       </Card>
     </div>

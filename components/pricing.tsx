@@ -1,34 +1,27 @@
 import React, { useState } from 'react';
-import { Button } from './ui/button';
+import PricingCard from './pricing-card';
 import axios from 'axios';
+
 const PricingPage = () => {
   const [isAnnual, setIsAnnual] = useState(false);
-  const [isMonthly, setIsMonthly] = useState(true); // Add this state variable
+  const [isMonthly, setIsMonthly] = useState(true);
+  const [isBusiness, setIsBusiness] = useState(false);
   const [loading, setLoading] = useState(false);
-
 
   const handleToggle = () => {
     setIsAnnual(!isAnnual);
-    // setIsMonthly(!isMonthly); // Update the isMonthly state
-
+    setIsMonthly(!isMonthly);
   };
 
-//  const handleOnClick = async () => {
-//   try {
-//     setLoading(true);
-//     const response = await axios.get(`/api/stripe?isMonthly=${isAnnual}`);
-//     window.location.href = response.data.url;
-//   } catch (error) {
-//     console.error(error);
-//   } finally {
-//     setLoading(false);
-//   }
-// };
+  const handleBusinessClick = () => {
+    setIsBusiness(true);
+    handleOnClick(true);
+  };
 
-const handleOnClick = async () => {
+  const handleOnClick = async (isBusiness = false) => {
     try {
       setLoading(true);
-      const response = await axios.get(`/api/stripe?isAnnual=${isMonthly}`);
+      const response = await axios.get(`/api/stripe?isAnnual=${isMonthly}&isBusiness=${isBusiness}`);
       window.location.href = response.data.url;
     } catch (error) {
       console.error(error);
@@ -36,31 +29,71 @@ const handleOnClick = async () => {
       setLoading(false);
     }
   };
-  
+
+  const pricingCards = [
+    {
+      title: 'Free',
+      description: 'Try out Pallyy and schedule 15 posts per month, for a single brand. No credit card required.',
+      price: 0,
+      period: 'per month',
+      features: ['1 Social Set', '15 Scheduled posts', 'Feed Planner', 'Reports', 'Calendar, board & table views'],
+      variant: 'outline',
+      handleClick: () => {}, 
+      isBusiness: false,
+    },
+    {
+      title: 'Premium',
+      description: 'For social media agencies with multiple brands; unlimited posting, add more brands & more.',
+      price: isAnnual ? '180' : '18',
+      period: isAnnual ? 'per year' : 'per month',
+      features: [
+        'Additional Social Sets ($18/month each)',
+        'Additional Users ($23/month each)',
+        'Custom Analytics Reports',
+        'Custom Domain',
+        'Unlimited Scheduled Posts',
+        'Bulk Scheduling',
+        'Bio Link',
+      ],
+      variant: 'premium',
+      handleClick: handleOnClick,
+      isBusiness: false,
+    },
+    {
+      title: 'Business',
+      description:
+        'For large organizations with extensive social media needs; unlimited posting, advanced analytics, priority support, and more.',
+      price: isAnnual ? '500' : '50',
+      period: isAnnual ? 'per year' : 'per month',
+      features: [
+        'Unlimited Social Sets',
+        'Advanced Analytics',
+        'Priority Support',
+        'Custom Solutions',
+        'Team Collaboration Tools',
+        'API Access',
+      ],
+      variant: 'outline',
+      handleClick: handleBusinessClick,
+      isBusiness: true,
+    },
+  ];
+
   return (
     <div className="bg-[#111827] text-white p-8">
       <h1 className="text-4xl font-bold mb-8">Pricing</h1>
       <p className="mb-8">
-        Start scheduling on our Free plan - no credit card required, or trial Premium for unlimited scheduling, multiple social sets & more.
+        Start scheduling on our Free plan - no credit card required, or trial Premium for unlimited scheduling, multiple
+        social sets & more.
       </p>
-      <button className="bg-black text-white px-4 py-2 rounded-full mb-8">
-        GET STARTED FOR FREE
-      </button>
-      <p className="mb-8">
-        Trusted lady by growing brands and agencies around the world including:
-      </p>
-      {/* Add your logos here */}
       <div className="flex items-center justify-center mb-8">
         <span className="mr-2">Monthly</span>
-        <label
-          htmlFor="toggle"
-          className="flex items-center cursor-pointer relative"
-        >
+        <label htmlFor="toggle" className="flex items-center cursor-pointer relative">
           <input
             type="checkbox"
             id="toggle"
             className="sr-only"
-            checked={isAnnual}
+            checked={isMonthly}
             onChange={handleToggle}
           />
           <div className="w-10 h-6 bg-gray-400 rounded-full transition"></div>
@@ -71,71 +104,22 @@ const handleOnClick = async () => {
           ></span>
         </label>
         <span className="ml-2">Annually</span>
-        <span className="ml-2 bg-green-500 text-white px-2 py-1 rounded-full">
-          Save 70%
-        </span>
+        <span className="ml-2 bg-green-500 text-white px-2 py-1 rounded-full">2 months for free</span>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div className="bg-[#1E293B] p-8 rounded-lg">
-          <h2 className="text-2xl font-bold mb-4">Free</h2>
-          <p className="mb-4">
-            Try out Pallyy and schedule 15 posts per month, for a single brand.
-            No credit card required.
-          </p>
-          <p className="text-4xl font-bold mb-4">$0</p>
-          <p className="mb-4">per month</p>
-          <p className="mb-4">Includes:</p>
-          <Button variant={'outline'} className="bg-[#2B3945] text-white px-4 py-2 rounded-full mb-4" >
-            GET STARTED
-          </Button>
-          <p className="font-bold mb-2">What you get with Free:</p>
-          <ul className="list-disc list-inside mb-4">
-            <li>1 Social Set</li>
-            <li>15 Scheduled posts</li>
-            <li>Feed Planner</li>
-            <li>Reports</li>
-            <li>Calendar, board & table views</li>
-          </ul>
-        </div>
-        <div className="bg-[#1E293B] p-8 rounded-lg">
-          <h2 className="text-2xl font-bold mb-4">Premium</h2>
-          <p className="mb-4">
-            For social media agencies with multiple brands; unlimited posting,
-            add more brands & more.
-          </p>
-          <p className="text-4xl font-bold mb-4">
-            ${isAnnual ? '180' : '18'}
-          </p>
-          <p className="mb-4">{isAnnual ? 'per year' : 'per month'}</p>
-          <p className="mb-4">Includes:</p>
-          {/* Add your includes here */}
-          {/* <button className={`bg-[${isAnnual ? '#16A34A' : '#2B3945'}] text-white px-4 py-2 rounded-full mb-4`}>
-            TRY FREE FOR 14 DAYS
-          </button> */}
-        <div className='mb-4'>
-
-          {/* <Button variant={'premium'} className='text-white px-4 py-2 rounded-full mb-4`'>TRY FREE FOR 14 DAYS</Button>
-           */}
-<Button
-  variant={'premium'}
-  className='text-white px-4 py-2 rounded-full mb-4'
-  onClick={handleOnClick}
->
-  TRY FREE FOR 14 DAYS
-</Button>
-        </div>
-
-          <p className="font-bold mb-2">What you get with Premium:</p>
-          <ul className="list-disc list-inside mb-4">
-            <li>Additional Social Sets ($18/month each)</li>
-            <li>Additional Users ($23/month each)</li>
-            <li>Custom Analytics Reports</li>
-            <li>Custom Domain</li>
-            <li>Unlimited Scheduled Posts</li>
-            <li>Bulk Scheduling</li>
-            <li>Bio Link</li>
-          </ul>
-        </div>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {pricingCards.map((card, index) => (
+          <PricingCard
+            key={index}
+            title={card.title}
+            description={card.description}
+            price={card.price}
+            period={card.period}
+            features={card.features}
+            variant={card.variant}
+            handleClick={card.handleClick}
+            isBusiness={card.isBusiness}
+          />
+        ))}
       </div>
     </div>
   );
