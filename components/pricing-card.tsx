@@ -1,11 +1,12 @@
 import React from 'react';
 import { Button } from './ui/button';
 import { useUser } from '@clerk/nextjs';
+import { cn } from '@/lib/utils';
 
-const PricingCard = ({ title, description, price, period, features, variant, handleClick, isBusiness }:any) => {
+const PricingCard = ({ title, description, price, period, features, variant, handleClick, isBusiness,mb }:any) => {
     const { user } = useUser();
   return (
-    <div className={`bg-[#1E293B] p-8 ${variant === 'premium' ? 'border-gradient' : ''}`}>
+    <div className={cn(`bg-[#1E293B] p-8 ${variant === 'premium' ? 'border-gradient' : ''} ${mb}`)}>
       <h2 className="text-2xl font-bold mb-4">{title}</h2>
       <p className="mb-4 h-[110px]">{description}</p>
       <p className="text-4xl font-bold mb-4">${price}</p>

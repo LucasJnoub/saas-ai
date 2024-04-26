@@ -35,15 +35,28 @@ function LandingNavBar() {
         </h1>
       </Link>
       <div className="flex items-center gap-x-2 flex-row">
-  <div className="hidden sm:flex gap-x-2">
-    <Link href={isSignedIn ? "/dashboard" : "/sign-in"}>
+  <div className="hidden sm:flex gap-x-5">
+    {/* <Link href={isSignedIn ? "/dashboard" : "/sign-in"}>
       <Button variant="outline" className="rounded-full">
         Sign-in
       </Button>
-    </Link>
+    </Link> */}
+    <div className="text-white flex flex-row  items-center gap-3">
+      {/* <ul>
+        <li>Pricing</li>
+      </ul>
+      <ul>
+        <li>Pricing</li>
+      </ul> */}
+      <ul>
+        <a href="/pricing">
+        <li>Pricing</li>
+        </a>
+      </ul>
+    </div>
     <Link href={isSignedIn ? "/dashboard" : "/sign-up"}>
-      <Button variant="outline" className="rounded-full">
-        Get Started
+      <Button variant="ghost" className="rounded-full text-white border border-solid-red">
+          Get Started
       </Button>
     </Link>
   </div>

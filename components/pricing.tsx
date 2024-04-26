@@ -80,12 +80,12 @@ const PricingPage = () => {
   ];
 
   return (
-    <div className="bg-[#111827] text-white p-8">
-      <h1 className="text-4xl font-bold mb-8">Pricing</h1>
-      <p className="mb-8">
+    <div className="bg-[#111827] text-white p-8 ">
+      <h1 className="text-4xl font-bold mb-8 text-center">Pricing</h1>
+      {/* <p className="mb-8 text-center">
         Start scheduling on our Free plan - no credit card required, or trial Premium for unlimited scheduling, multiple
         social sets & more.
-      </p>
+      </p> */}
       <div className="flex items-center justify-center mb-8">
         <span className="mr-2">Monthly</span>
         <label htmlFor="toggle" className="flex items-center cursor-pointer relative">
@@ -109,6 +109,7 @@ const PricingPage = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {pricingCards.map((card, index) => (
           <PricingCard
+          mb={card.variant === 'premium' ? 'mb-8' : 'mt-5'}
             key={index}
             title={card.title}
             description={card.description}
