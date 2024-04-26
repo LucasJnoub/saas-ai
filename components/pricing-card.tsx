@@ -2,8 +2,9 @@ import React from 'react';
 import { Button } from './ui/button';
 import { useUser } from '@clerk/nextjs';
 import { cn } from '@/lib/utils';
+import Link from 'next/link';
 
-const PricingCard = ({ title, description, price, period, features, variant, handleClick, isBusiness,mb }:any) => {
+const PricingCard = ({ title, description, price, period, features, variant, handleClick, isBusiness,mb, buttonText , userPlan}:any) => {
     const { user } = useUser();
   return (
     <div className={cn(`bg-[#1E293B] p-8 ${variant === 'premium' ? 'border-gradient' : ''} ${mb}`)}>
@@ -21,16 +22,27 @@ const PricingCard = ({ title, description, price, period, features, variant, han
         </ul>
       </div>
       <div className="mb-4 flex justify-center">
-        <Button
+        { userPlan && userPlan!='business'? (<Button
+          variant={variant}
+          className={`text-white px-4 py-2 rounded-full mb-4${
+            variant === 'outline' ? 'bg-[#2B3945]' : ''
+          } w-[250px]`}
+          onClick={handleClick}
+        >
+          {buttonText}
+        </Button>):
+        <Link href={"/dashboard"}>
+          <Button
           variant={variant}
           className={`text-white px-4 py-2 rounded-full mb-4 ${
             variant === 'outline' ? 'bg-[#2B3945]' : ''
-          }`}
-          onClick={handleClick}
-        >
-          {user && isBusiness ? 'TRY FREE FOR 30 DAYS' : ' TRY FOR FREE'}
-          {/* {isBusiness ? 'TRY FREE FOR 30 DAYS' : 'TRY FREE FOR 14 DAYS'} */}
+          } w-[250px]`}
+        > 
+          {buttonText}
         </Button>
+        </Link>
+        }
+      
       </div>
     </div>
   );

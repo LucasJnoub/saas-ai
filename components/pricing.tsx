@@ -1,12 +1,44 @@
-import React, { useState } from 'react';
-import PricingCard from './pricing-card';
+"use client"
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useUser } from '@clerk/nextjs';
+import PricingCard from './pricing-card';
+import { env } from 'process';
 
 const PricingPage = () => {
+  console.log('PricingPage component mounted');
   const [isAnnual, setIsAnnual] = useState(false);
   const [isMonthly, setIsMonthly] = useState(true);
+  const [userPlan, setUserPlan] = useState(null);
   const [isBusiness, setIsBusiness] = useState(false);
   const [loading, setLoading] = useState(false);
+  const user = useUser();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const response = await axios.get("/api/checksubscription");
+        if (response.status === 200) {
+          const data = await response.data;
+          setUserPlan(data.plan);
+          setLoading(false);
+          console.log("User plan fetched successfully:", data.plan);
+        } else {
+          setUserPlan(null);
+          setLoading(false);
+          console.log("Failed to fetch user subscription. Status code:", response.status);
+        }
+      } catch (error) {
+        console.error("Error fetching user subscription:", error);
+        setUserPlan(null);
+        setLoading(false);
+      }
+    };
+  
+    fetchData();  
+  }, []);
+  
 
   const handleToggle = () => {
     setIsAnnual(!isAnnual);
@@ -40,9 +72,11 @@ const PricingPage = () => {
       variant: 'outline',
       handleClick: () => {}, 
       isBusiness: false,
+      buttonText: "Create Account"
+
     },
     {
-      title: 'Premium',
+      title: 'Pro',
       description: 'For social media agencies with multiple brands; unlimited posting, add more brands & more.',
       price: isAnnual ? '180' : '18',
       period: isAnnual ? 'per year' : 'per month',
@@ -58,6 +92,7 @@ const PricingPage = () => {
       variant: 'premium',
       handleClick: handleOnClick,
       isBusiness: false,
+      buttonText: "Upgrade"
     },
     {
       title: 'Business',
@@ -76,6 +111,7 @@ const PricingPage = () => {
       variant: 'outline',
       handleClick: handleBusinessClick,
       isBusiness: true,
+      buttonText: "Upgrade"
     },
   ];
 
@@ -119,7 +155,9 @@ const PricingPage = () => {
             variant={card.variant}
             handleClick={card.handleClick}
             isBusiness={card.isBusiness}
-          />
+            buttonText={card.buttonText}
+            userPlan={userPlan}
+            />
         ))}
       </div>
     </div>
