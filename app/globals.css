@@ -83,7 +83,7 @@ body,
 
 @layer components {
   .border-gradient {
-    border: 2px solid #22C55E;
+    border: 2px solid #38B2AC;
     /* border-image-slice: 1;
     border-width: 2px;
     border-image-source: linear-gradient(to top, #1E293B, #6B7280); */

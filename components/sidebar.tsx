@@ -54,7 +54,7 @@ const montserrat = Montserrat({
 // ];
 const routes = [
   {
-    label: '',
+    label: 'Dashboard',
     icon: LayoutDashboard,
     href: '/dashboard',
     color: ' '
@@ -84,10 +84,10 @@ const routes = [
     color: ' '
   },
   {
-    label: '',
-    icon: LayoutDashboard,
-    href: '',
-    color: ' '
+    label: 'Settings',
+    icon: SettingsIcon,
+    href: '/settings',
+    color: 'text-white'
   },
 ];
 

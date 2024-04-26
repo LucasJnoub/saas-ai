@@ -2,7 +2,7 @@
 import { Montserrat } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
-import { useAuth } from "@clerk/nextjs";
+import { SignOutButton, UserButton, useAuth } from "@clerk/nextjs";
 import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
 import MobileLandingMenu from "./mobile-landing-menu";
@@ -48,17 +48,21 @@ function LandingNavBar() {
       <ul>
         <li>Pricing</li>
       </ul> */}
-      <ul>
+      <ul className="flex flex-row gap-3">
         <a href="/pricing">
         <li>Pricing</li>
+        </a>
+        <a href="/sign-in">
+        <li>Sign in</li>
         </a>
       </ul>
     </div>
     <Link href={isSignedIn ? "/dashboard" : "/sign-up"}>
       <Button variant="ghost" className="rounded-full text-white border border-solid-red">
-          Get Started
+         {isSignedIn ? "Dashboard" : "Get Started"} 
       </Button>
     </Link>
+
   </div>
   <div className="sm:hidden">
     <MobileLandingMenu></MobileLandingMenu>

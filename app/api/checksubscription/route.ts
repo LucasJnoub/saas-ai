@@ -2,9 +2,6 @@ import prismadb from "@/lib/prismadb";
 import { stripe } from "@/lib/stripe";
 import { auth, currentUser } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
-// API checksubscription
-
-
 
 export async function GET(req: Request) {
   const { userId } = auth();
@@ -33,12 +30,13 @@ export async function GET(req: Request) {
     );
 
     const priceId = checkUserSubscription.items.data[0].price.id;
-    console.log(`User's subscription price ID: ${priceId}`);  
 
-    let plan = ''
+    let plan;
 
-    if(priceId == process.env.PRICE_ID_PRO_MENSAL || priceId == process.env.PRICE_ID_PRO_ANUAL)plan = 'Pro'
-    if(priceId == process.env.PRICE_ID_BUSINESS_MENSAL || priceId == process.env.PRICE_ID_BUSINESS_ANUAL)plan = 'Business'
+    if(priceId == process.env.PRICE_ID_PRO_MENSAL)plan='pro-mensal'
+    if(priceId == process.env.PRICE_ID_PRO_ANUAL)plan='pro-anual'
+    if(priceId == process.env.PRICE_ID_BUSINESS_MENSAL)plan='business-mensal'
+    if(priceId == process.env.PRICE_ID_BUSINESS_ANUAL)plan='business-anual'
 
     return new NextResponse(JSON.stringify({ plan }), { status: 200 });
   } catch (error) {

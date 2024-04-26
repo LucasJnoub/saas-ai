@@ -4,15 +4,18 @@ import axios from 'axios';
 import { useUser } from '@clerk/nextjs';
 import PricingCard from './pricing-card';
 import { env } from 'process';
+import { useRouter } from 'next/navigation';
+
 
 const PricingPage = () => {
-  console.log('PricingPage component mounted');
   const [isAnnual, setIsAnnual] = useState(false);
   const [isMonthly, setIsMonthly] = useState(true);
   const [userPlan, setUserPlan] = useState(null);
   const [isBusiness, setIsBusiness] = useState(false);
   const [loading, setLoading] = useState(false);
   const user = useUser();
+  const router = useRouter();
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -23,7 +26,6 @@ const PricingPage = () => {
           const data = await response.data;
           setUserPlan(data.plan);
           setLoading(false);
-          console.log("User plan fetched successfully:", data.plan);
         } else {
           setUserPlan(null);
           setLoading(false);
@@ -50,6 +52,17 @@ const PricingPage = () => {
     handleOnClick(true);
   };
 
+  const handleFreeClick = async () => {
+    if (user) {
+      // Se o usuário estiver logado, redirecione para a rota dashboard
+      router.push("/dashboard");
+    } else {
+      // Se o usuário não estiver logado, redirecione para a página de signup
+      router.push("/signup");
+    }
+  };
+  
+
   const handleOnClick = async (isBusiness = false) => {
     try {
       setLoading(true);
@@ -62,6 +75,8 @@ const PricingPage = () => {
     }
   };
 
+  
+
   const pricingCards = [
     {
       title: 'Free',
@@ -69,12 +84,12 @@ const PricingPage = () => {
       price: 0,
       period: 'per month',
       features: ['1 Social Set', '15 Scheduled posts', 'Feed Planner', 'Reports', 'Calendar, board & table views'],
-      variant: 'outline',
-      handleClick: () => {}, 
+      variant: 'ghost',
+      handleClick: handleFreeClick, // Alterado para handleFreeClick
       isBusiness: false,
-      buttonText: "Create Account"
-
+      buttonText: user?"Go to dashboard":"Sign Up",
     },
+      
     {
       title: 'Pro',
       description: 'For social media agencies with multiple brands; unlimited posting, add more brands & more.',
@@ -92,7 +107,9 @@ const PricingPage = () => {
       variant: 'premium',
       handleClick: handleOnClick,
       isBusiness: false,
-      buttonText: "Upgrade"
+      buttonText: "Upgrade",
+      titleColor:'text-[#A655F7]',
+      priceColor:"text-[#38B2AC]", 
     },
     {
       title: 'Business',
@@ -108,10 +125,10 @@ const PricingPage = () => {
         'Team Collaboration Tools',
         'API Access',
       ],
-      variant: 'outline',
+      variant: 'ghost',
       handleClick: handleBusinessClick,
       isBusiness: true,
-      buttonText: "Upgrade"
+      buttonText: "Upgrade",
     },
   ];
 
@@ -122,26 +139,30 @@ const PricingPage = () => {
         Start scheduling on our Free plan - no credit card required, or trial Premium for unlimited scheduling, multiple
         social sets & more.
       </p> */}
-      <div className="flex items-center justify-center mb-8">
-        <span className="mr-2">Monthly</span>
-        <label htmlFor="toggle" className="flex items-center cursor-pointer relative">
-          <input
-            type="checkbox"
-            id="toggle"
-            className="sr-only"
-            checked={isMonthly}
-            onChange={handleToggle}
-          />
-          <div className="w-10 h-6 bg-gray-400 rounded-full transition"></div>
-          <span
-            className={`absolute w-4 h-4 bg-white rounded-full transition transform ${
-              isAnnual ? 'translate-x-6' : 'translate-x-1'
-            }`}
-          ></span>
-        </label>
-        <span className="ml-2">Annually</span>
-        <span className="ml-2 bg-green-500 text-white px-2 py-1 rounded-full">2 months for free</span>
-      </div>
+      <div className="flex items-center justify-center flex-wrap mb-8">
+  <span className="mr-2">Monthly</span>
+  <label htmlFor="toggle" className="flex items-center cursor-pointer relative">
+    <input
+      type="checkbox"
+      id="toggle"
+      className="sr-only"
+      checked={isMonthly}
+      onChange={handleToggle}
+    />
+    <div className="w-10 h-6 bg-gray-400 rounded-full transition"></div>
+    <span
+      className={`absolute w-4 h-4 bg-white rounded-full transition transform ${
+        isAnnual ? 'translate-x-6' : 'translate-x-1'
+      }`}
+    ></span>
+  </label>
+  <span className="ml-2">Annually</span>
+  <br className="hidden md:block" />
+  {/* <span className="ml-2 bg-green-500 text-white px-2 py-1 rounded-full mt-2 md:mt-0">
+    2 months for free on annual plan
+  </span> */}
+</div>
+
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {pricingCards.map((card, index) => (
           <PricingCard
@@ -157,6 +178,8 @@ const PricingPage = () => {
             isBusiness={card.isBusiness}
             buttonText={card.buttonText}
             userPlan={userPlan}
+            titleColor={card.titleColor}
+            priceColor={card.priceColor}
             />
         ))}
       </div>

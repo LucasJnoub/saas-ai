@@ -47,7 +47,7 @@ export default function LandingSideBar() {
             )}
           >
             <div className="flex items-center flex-1">
-              <UserIcon className="h-5 w-5 mr-3" />
+              {/* <UserIcon className="h-5 w-5 mr-3" /> */}
               Sign-in
             </div>
           </Link>
@@ -55,12 +55,24 @@ export default function LandingSideBar() {
             href={isSignedIn ? "/dashboard" : "/sign-up"}
             className={cn(
               'text-sm group flex p-3 w-full justify-start font-medium cursor-pointer hover:text-white hover:bg-white/10 rounded-lg transition',
+              isSignedIn ? 'bg-white/10 text-white' : 'text-zinc-400' 
+            )}
+          >
+            <div className="flex items-center flex-1">
+              {/* <UserPlusIcon className="h-5 w-5 mr-3" /> */}
+              Sign-up
+            </div>
+          </Link>
+          <Link
+            href={"/pricing"}
+            className={cn(
+              'text-sm group flex p-3 w-full justify-start font-medium cursor-pointer hover:text-white hover:bg-white/10 rounded-lg transition',
               isSignedIn ? 'bg-white/10 text-white' : 'text-zinc-400'
             )}
           >
             <div className="flex items-center flex-1">
-              <UserPlusIcon className="h-5 w-5 mr-3" />
-              Sign-up
+              {/* <UserPlusIcon className="h-5 w-5 mr-3" /> */}
+              Pricing
             </div>
           </Link>
         </div>
